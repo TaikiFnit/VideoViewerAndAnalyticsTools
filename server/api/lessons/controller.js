@@ -5,13 +5,14 @@ const model = new Model(new DatabaseMapper())
 
 const index = async (req, res) => {
   console.log('index')
-  const result = await model.test()
+  const result = await model.all()
   res.send(result)
 }
 
-const show = (req, res) => {
+const show = async (req, res) => {
   console.log('show')
-  res.send(req.params.lesson_name)
+  const result = await model.find(req.params.lesson_id)
+  res.send(result)
 }
 
 module.exports = { index, show }
