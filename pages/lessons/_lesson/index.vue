@@ -2,7 +2,7 @@
   <section>
     <h1>{{ lesson.title }}</h1>
     <p>{{ lesson.summary }}</p>
-    <p>{{ lesson.description }}</p>
+    <section v-html="$md.render(lesson.description)" />
   </section>
 </template>
 
