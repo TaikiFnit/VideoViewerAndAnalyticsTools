@@ -10,8 +10,23 @@ module.exports = class LessonModel {
   }
 
   async find(id) {
-    const lesson = await this.databaseMapper.fetchLessonById(id)
-    return lesson[0]
+    const lesson = (await this.databaseMapper.fetchLessonById(id))[0]
+    const videos = await this.databaseMapper.fetchVideosByLessonId(lesson.id)
+    return { ...lesson, videos }
+  }
+
+  async findBySlug(slug) {
+    const lesson = (await this.databaseMapper.fetchLessonBySlug(slug))[0]
+    const videos = await this.databaseMapper.fetchVideosByLessonId(lesson.id)
+    return { ...lesson, videos }
+  }
+
+  async findVideoByOrder(slug, order) {
+    const video = (
+      await this.databaseMapper.fetchVideoByLessonSlugAndOrder(slug, order)
+    )[0]
+
+    return video
   }
 
   async test() {

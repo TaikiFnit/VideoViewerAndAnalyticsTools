@@ -1,5 +1,5 @@
+const DatabaseMapper = require('../../database/mapper')
 const Model = require('./model')
-const DatabaseMapper = require('./database_mapper')
 
 const model = new Model(new DatabaseMapper())
 
@@ -11,8 +11,17 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
   console.log('show')
-  const result = await model.find(req.params.lesson_id)
+  const result = await model.findBySlug(req.params.lessonSlug)
   res.send(result)
 }
 
-module.exports = { index, show }
+const video = async (req, res) => {
+  console.log('video')
+  const result = await model.findVideoByOrder(
+    req.params.lessonSlug,
+    req.params.videoOrder
+  )
+  res.send(result)
+}
+
+module.exports = { index, show, video }

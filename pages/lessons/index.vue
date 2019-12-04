@@ -5,7 +5,7 @@
       <li v-for="lesson in lessons">
         <section>
           <h3>
-            <nuxt-link :to="`/lessons/${lesson.id}`">
+            <nuxt-link :to="`/lessons/${lesson.slug}`">
               {{ lesson.title }}
             </nuxt-link>
           </h3>

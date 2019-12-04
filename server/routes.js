@@ -2,8 +2,12 @@ const { Router } = require('express')
 const router = Router()
 
 const lessonsController = require('./api/lessons/controller')
+const videosController = require('./api/videos/controller')
 
 router.get('/api/lessons/', lessonsController.index)
-router.get('/api/lessons/:lesson_id', lessonsController.show)
+router.get('/api/lessons/:lessonSlug', lessonsController.show)
+router.get('/api/lessons/:lessonSlug/:videoOrder', lessonsController.video)
+
+router.get('/api/videos/:videoId', videosController.show)
 
 module.exports = router
