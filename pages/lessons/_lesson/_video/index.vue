@@ -40,18 +40,32 @@ export default {
       const time = await this.player.getCurrentTime()
       console.log('playing')
       console.log(time)
+      this.record_watch_events('START', time)
     },
     // 一時停止した際に発火
     async paused() {
       const time = await this.player.getCurrentTime()
       console.log('paused')
       console.log(time)
+      this.record_watch_events('STOP', time)
     },
     // 再生終了した際に発火
     async ended() {
       const time = await this.player.getCurrentTime()
       console.log('ended')
       console.log(time)
+      this.record_watch_events('END', time)
+    },
+    async record_watch_events(type, time) {
+      await this.$axios.$post(
+        '/api/logs/interaction',
+        {
+          type,
+          time,
+          videoId: this.video.id
+        },
+        {}
+      )
     }
   }
 }

@@ -1,13 +1,16 @@
 const express = require('express')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
-const app = express()
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
 config.dev = process.env.NODE_ENV !== 'production'
 
 const router = require('./routes')
+const app = express()
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(router)
 
 async function start() {
