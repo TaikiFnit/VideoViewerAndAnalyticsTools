@@ -4,7 +4,7 @@
       <nuxt-link to="/">TOP</nuxt-link>
       &gt; レッスン一覧
     </p>
-    <h1>レッスン一覧</h1>
+    <h2>レッスン一覧</h2>
     <ul>
       <li v-for="lesson in lessons">
         <section>
