@@ -79,4 +79,22 @@ module.exports = class LessonDatabaseMapper {
 
     return result
   }
+
+  async storeVideoPlayerInteractionLog(
+    videoId,
+    videoTime,
+    userId,
+    tempId,
+    type
+  ) {
+    const sql = `insert into video_player_interaction_logs(video_id, video_time, user_id, temp_id, type, created_at) values(?, ?, ?, ?, ?, now())`
+    const result = await this.database.execute(sql, [
+      videoId,
+      videoTime,
+      userId,
+      tempId,
+      type
+    ])
+    return result
+  }
 }

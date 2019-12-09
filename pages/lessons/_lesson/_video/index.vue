@@ -1,12 +1,16 @@
 <template>
   <section>
-    <h2>{{ video.title }}</h2>
     <p>
+      <nuxt-link to="/">TOP</nuxt-link>
+      &gt;
+      <nuxt-link to="/lessons">レッスン一覧</nuxt-link>
+      &gt;
       <nuxt-link :to="`/lessons/${lesson.slug}`">
         {{ lesson.title }}
       </nuxt-link>
       &gt; {{ video.title }}
     </p>
+    <h2>{{ video.title }}</h2>
     <youtube
       id="player"
       ref="youtube"
@@ -57,15 +61,12 @@ export default {
       this.record_watch_events('END', time)
     },
     async record_watch_events(type, time) {
-      await this.$axios.$post(
-        '/api/logs/interaction',
-        {
-          type,
-          time,
-          videoId: this.video.id
-        },
-        {}
-      )
+      await this.$axios.$post('/api/logs/interaction', {
+        type,
+        time,
+        videoId: this.video.id,
+        tempId: this.$store.state.tempId
+      })
     }
   }
 }

@@ -1,5 +1,9 @@
 <template>
   <section>
+    <p>
+      <nuxt-link to="/">TOP</nuxt-link>
+      &gt; レッスン一覧
+    </p>
     <h1>レッスン一覧</h1>
     <ul>
       <li v-for="lesson in lessons">

@@ -1,5 +1,11 @@
 <template>
   <section>
+    <p>
+      <nuxt-link to="/">TOP</nuxt-link>
+      &gt;
+      <nuxt-link to="/lessons">レッスン一覧</nuxt-link>
+      &gt; {{ lesson.title }}
+    </p>
     <h2>{{ lesson.title }}</h2>
     <p>{{ lesson.summary }}</p>
     <section v-html="$md.render(lesson.description)" />

@@ -3,25 +3,27 @@ const Model = require('./model')
 
 const model = new Model(new DatabaseMapper())
 
-const interaction = async (req, res) => {
-  const { type, time, videoId } = req.body
-  // model.storeInteractionLog(req.params.)
+const interaction = (req, res) => {
   console.log('interaction')
   console.log(req.body)
-  console.log(type)
-  console.log(time)
-  console.log(videoId)
+
+  const { type, time, videoId, tempId } = req.body
+  const userId = req.session.authUser ? req.session.authUser.userId : null
+
+  model.storeInteractionLog(videoId, time, userId, tempId, type)
+
   res.send('ok')
 }
 
 const pageTransition = (req, res) => {
   console.log('page transition')
+  console.log(req.body)
 
   const host = req.headers.host
   const userId = req.session.authUser ? req.session.authUser.userId : null
-  const log = { ...req.body, userId, host }
+  const { path, isSsr, tempId } = req.body
 
-  model.storePageTransitionLog(log)
+  model.storePageTransitionLog(path, isSsr, tempId, userId, host)
 
   res.send('ok')
 }

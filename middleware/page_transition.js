@@ -3,7 +3,8 @@ export default async ({ req, route, store, $axios }) => {
   if (process.server) {
     // 初回接続時はsessionにtemp_idがセットされていない
     if (!req.session.tempId) {
-      // ユーザーの行動を識別するための, ランダムなunique_idを生成
+      // ユーザーの行動を識別するための, ランダムなunique_idを生成して、sessionに格納.
+      // ここのcontextのreq.sessionはauthUserが格納されるexpressのsessionとは別(おそらくnuxt routerのsession?)
       req.session.tempId = generateRandomUniqueId()
     }
 

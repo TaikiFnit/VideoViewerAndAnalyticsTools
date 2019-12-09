@@ -3,9 +3,17 @@ module.exports = class LogModel {
     this.databaseMapper = databaseMapper
   }
 
-  async storeInteractionLog(type, time, movieId, tempId, userId) {}
+  storeInteractionLog(videoId, time, userId, tempId, type) {
+    this.databaseMapper.storeVideoPlayerInteractionLog(
+      videoId,
+      time,
+      userId,
+      tempId,
+      type
+    )
+  }
 
-  storePageTransitionLog({ path, isSsr, tempId, userId, host }) {
+  storePageTransitionLog(path, isSsr, tempId, userId, host) {
     this.databaseMapper.storePageTransitionLog(
       path,
       isSsr,
