@@ -1,10 +1,14 @@
 export const state = () => ({
-  authUser: null
+  authUser: null,
+  tempId: null
 })
 
 export const mutations = {
   SET_USER(state, user) {
     state.authUser = user
+  },
+  SET_TEMP_ID(state, tempId) {
+    state.tempId = tempId
   }
 }
 
@@ -16,6 +20,7 @@ export const actions = {
     }
   },
   async login({ commit }, { username, password }) {
+    console.log('login')
     try {
       const data = await this.$axios.$post('/api/login', {
         username,
@@ -33,5 +38,9 @@ export const actions = {
   async logout({ commit }) {
     await this.$axios.$post('/api/logout')
     commit('SET_USER', null)
+  },
+
+  storeTempId({ commit }, { tempId }) {
+    commit('SET_TEMP_ID', tempId)
   }
 }

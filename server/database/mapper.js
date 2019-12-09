@@ -10,6 +10,12 @@ module.exports = class LessonDatabaseMapper {
     return result
   }
 
+  async fetchUserByName(username) {
+    const sql = 'select * from users where users.name = ?'
+    const result = await this.database.execute(sql, [username])
+    return result
+  }
+
   async fetchAllLessons() {
     const sql = 'select * from lessons'
     const result = await this.database.execute(sql)
@@ -53,6 +59,24 @@ module.exports = class LessonDatabaseMapper {
         lesson_videos.order = ?`
 
     const result = await this.database.execute(sql, [slug, order])
+    return result
+  }
+
+  async storePageTransitionLog(path, isSsr, tempId, userId, host) {
+    const sql = `
+      insert into
+        page_transition_logs(path, is_ssr, temp_id, user_id, host, created_at)
+      values
+        (?, ?, ?, ?, ?, now())`
+
+    const result = await this.database.execute(sql, [
+      path,
+      isSsr,
+      tempId,
+      userId,
+      host
+    ])
+
     return result
   }
 }

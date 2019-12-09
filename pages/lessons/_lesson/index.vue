@@ -22,7 +22,6 @@ export default {
   async asyncData({ $axios, params }) {
     const slug = params.lesson
     const lesson = await $axios.$get(`/api/lessons/${slug}`)
-    console.log(lesson)
     return { lesson, slug }
   }
 }

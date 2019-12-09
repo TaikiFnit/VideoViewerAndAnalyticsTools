@@ -5,20 +5,25 @@
       <h1 class="title">
         Fnit-Learning
       </h1>
-      <h2 class="subtitle">
-        ログインしてね
-      </h2>
-      <p>Email: <input v-model="formEmail" type="email" name="email" /></p>
-      <p>
-        Password:
-        <input v-model="formPassword" type="password" name="password" />
-      </p>
-      <button class="button--green">
-        ログイン
-      </button>
-      <button class="button--grey">
-        新規登録
-      </button>
+      <form v-if="!this.$store.state.authUser" @submit.prevent="login">
+        <p v-if="formError" class="error">
+          {{ formError }}
+        </p>
+        <p>
+          Username: <input v-model="formUsername" type="text" name="username" />
+        </p>
+        <p>
+          Password:
+          <input v-model="formPassword" type="password" name="password" />
+        </p>
+        <button class="button--green" type="submit">
+          ログイン
+        </button>
+      </form>
+      <div v-else>
+        <p>Hello {{ $store.state.authUser.username }}!</p>
+        <p><nuxt-link to="/lessons">レッスン一覧はこちら</nuxt-link></p>
+      </div>
     </div>
   </div>
 </template>
@@ -33,15 +38,16 @@ export default {
   data() {
     return {
       formError: null,
-      formEmail: '',
+      formUsername: '',
       formPassword: ''
     }
   },
   methods: {
     async login() {
+      console.log('login')
       try {
         await this.$store.dispatch('login', {
-          email: this.formUsername,
+          username: this.formUsername,
           password: this.formPassword
         })
         this.formUsername = ''
@@ -92,5 +98,9 @@ export default {
 
 p {
   line-height: 2;
+}
+
+.error {
+  color: red;
 }
 </style>

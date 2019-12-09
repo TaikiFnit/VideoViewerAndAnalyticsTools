@@ -1,6 +1,5 @@
 module.exports = class LessonModel {
   constructor(databaseMapper) {
-    console.log('model constructed')
     this.databaseMapper = databaseMapper
   }
 

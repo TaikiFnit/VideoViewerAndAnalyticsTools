@@ -1,6 +1,5 @@
 module.exports = class VideoModel {
   constructor(databaseMapper) {
-    console.log('model constructed')
     this.databaseMapper = databaseMapper
   }
 

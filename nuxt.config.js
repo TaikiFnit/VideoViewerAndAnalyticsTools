@@ -63,6 +63,12 @@ module.exports = {
     typography: true // 言語に依存しないきれいな 置換 + 引用符 を有効にします。
   },
   /*
+   ** RouterのためのMiddleware
+   */
+  router: {
+    middleware: ['page_transition']
+  },
+  /*
    ** Build configuration
    */
   build: {

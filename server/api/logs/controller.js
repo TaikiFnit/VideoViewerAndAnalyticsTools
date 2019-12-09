@@ -11,6 +11,19 @@ const interaction = async (req, res) => {
   console.log(type)
   console.log(time)
   console.log(videoId)
+  res.send('ok')
 }
 
-module.exports = { interaction }
+const pageTransition = (req, res) => {
+  console.log('page transition')
+
+  const host = req.headers.host
+  const userId = req.session.authUser ? req.session.authUser.userId : null
+  const log = { ...req.body, userId, host }
+
+  model.storePageTransitionLog(log)
+
+  res.send('ok')
+}
+
+module.exports = { interaction, pageTransition }
