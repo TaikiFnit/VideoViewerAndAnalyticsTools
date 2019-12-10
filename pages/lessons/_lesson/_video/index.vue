@@ -11,7 +11,7 @@
         </nuxt-link>
         &gt; {{ video.title }}
       </p>
-      <h2>{{ video.title }}</h2>
+      <h2>#{{ video.order }} {{ video.title }}</h2>
       <youtube
         id="player"
         ref="youtube"
@@ -22,19 +22,21 @@
         @ended="ended"
         class="player"
       />
-      <nuxt-link
-        v-if="video.order > 1"
-        :to="`/lessons/${lesson.slug}/${video.order - 1}`"
-      >
-        <button>&lt;&lt; 前の動画へ</button>
-      </nuxt-link>
-      <button>学習完了</button>
-      <nuxt-link
-        v-if="video.order < lesson.videos.length"
-        :to="`/lessons/${lesson.slug}/${video.order + 1}`"
-      >
-        <button>次の動画へ &gt;&gt;</button>
-      </nuxt-link>
+      <div>
+        <nuxt-link
+          v-if="video.order > 1"
+          :to="`/lessons/${lesson.slug}/${video.order - 1}`"
+        >
+          <button>&lt;&lt; 前の動画へ</button>
+        </nuxt-link>
+        <button>学習完了</button>
+        <nuxt-link
+          v-if="video.order < lesson.videos.length"
+          :to="`/lessons/${lesson.slug}/${video.order + 1}`"
+        >
+          <button>次の動画へ &gt;&gt;</button>
+        </nuxt-link>
+      </div>
     </section>
     <aside>
       <h2>動画一覧</h2>
@@ -53,6 +55,7 @@
 
 <script>
 export default {
+  middleware: 'auth',
   computed: {
     player() {
       return this.$refs.youtube.player
