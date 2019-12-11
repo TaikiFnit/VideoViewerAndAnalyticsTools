@@ -125,4 +125,15 @@ module.exports = class LessonDatabaseMapper {
     const result = await this.database.execute(sql, [userId, videoId, status])
     return result
   }
+
+  async storeFeedback(feedback, videoId, userId, tempId) {
+    const sql = `
+      insert into
+        video_feedbacks(feedback, video_id, user_id, temp_id, created_at)
+      values
+        (?, ?, ?, ?, now());`
+
+    const result = await this.database.execute(sql, [feedback, videoId, userId, tempId])
+    return result
+  }
 }

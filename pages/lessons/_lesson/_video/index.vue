@@ -43,8 +43,38 @@
           <button>次の動画へ &gt;&gt;</button>
         </nuxt-link>
       </div>
-      <form>
-        
+      <form
+        v-if="this.learningLog && this.learningLog.status == true"
+        @submit.prevent="submitFeedback"
+      >
+        <h3>学習のつまずきに関するアンケート</h3>
+        <p>
+          この動画の学習を終えて学習や作業につまずいた点や理解が難しかった点,
+          または動画通りにうまく行かなかった点を教えてください.
+          (あればあるだけ.)
+        </p>
+        <p>
+          記入する際は
+          具体的に動画内の何秒時点のどこにつまずいたかを書いてもらえるとありがたいです.
+          (記入する内容はどんなに小さなことやささいなつまずき等でも構いません)
+        </p>
+        <p>
+          記入例:
+          1.動画内0:23-0:45のウェブサイトの解説でウェブサイトを探すのに手間取った,
+          2.動画内2:00-3:00のプログラムの意味を理解することができなかった. など
+        </p>
+        <textarea
+          id="feedbackForm"
+          v-model="feedbackForm"
+          name="feedbackForm"
+          cols="120"
+          rows="10"
+        ></textarea>
+        <button type="submit">送信する</button>
+        <p>
+          ※アンケートは何度でも送信できます.
+          つまずき等が発生しだい逐次送ってもらう形でも大丈夫です.
+        </p>
       </form>
     </section>
     <aside>
@@ -65,6 +95,11 @@
 <script>
 export default {
   middleware: 'auth',
+  data() {
+    return {
+      feedbackForm: ''
+    }
+  },
   computed: {
     player() {
       return this.$refs.youtube.player
@@ -118,6 +153,16 @@ export default {
         `/api/logs/learning/${this.video.id}`
       )
       this.learningLog = learningLog
+    },
+    async submitFeedback() {
+      await this.$axios.$post('/api/logs/feedback', {
+        feedback: this.feedbackForm,
+        videoId: this.video.id,
+        tempId: this.$store.state.tempId
+      })
+
+      alert('送信完了. Thanks!')
+      this.feedbackForm = ''
     }
   }
 }

@@ -46,9 +46,19 @@ const storeLearningLog = (req, res) => {
   res.send('ok')
 }
 
+const storeFeedback = (req, res) => {
+  const { feedback, videoId, tempId } = req.body
+
+  const userId = req.session.authUser ? req.session.authUser.userId : null
+  model.storeFeedback(feedback, videoId, userId, tempId)
+
+  res.send('ok')
+}
+
 module.exports = {
   interaction,
   pageTransition,
   getLearningLog,
-  storeLearningLog
+  storeLearningLog,
+  storeFeedback
 }

@@ -34,4 +34,8 @@ module.exports = class LogModel {
   storeLearningLog(userId, videoId, status) {
     this.databaseMapper.storeLearningRecord(userId, videoId, status)
   }
+
+  storeFeedback(feedback, videoId, userId, tempId) {
+    this.databaseMapper.storeFeedback(feedback, videoId, userId, tempId)
+  }
 }
