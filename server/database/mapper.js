@@ -97,4 +97,32 @@ module.exports = class LessonDatabaseMapper {
     ])
     return result
   }
+
+  async findLearningRecord(userId, videoId) {
+    const sql = `
+      select
+        *
+      from
+        learning_records
+      where
+        learning_records.user_id = ? and learning_records.lesson_video_id = ?
+      order by
+        learning_records.created_at desc
+      limit
+        1`
+
+    const result = await this.database.execute(sql, [userId, videoId])
+    return result
+  }
+
+  async storeLearningRecord(userId, videoId, status) {
+    const sql = `
+      insert into
+        learning_records(user_id, lesson_video_id, status, created_at)
+      values
+        (?, ?, ?, now())`
+
+    const result = await this.database.execute(sql, [userId, videoId, status])
+    return result
+  }
 }

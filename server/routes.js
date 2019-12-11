@@ -17,5 +17,7 @@ router.get('/api/videos/:videoId', videosController.show)
 
 router.post('/api/logs/interaction', logsController.interaction)
 router.post('/api/logs/page_transition', logsController.pageTransition)
+router.get('/api/logs/learning/:videoId', logsController.getLearningLog)
+router.post('/api/logs/learning', logsController.storeLearningLog)
 
 module.exports = router

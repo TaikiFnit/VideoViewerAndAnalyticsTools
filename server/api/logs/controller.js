@@ -28,4 +28,27 @@ const pageTransition = (req, res) => {
   res.send('ok')
 }
 
-module.exports = { interaction, pageTransition }
+const getLearningLog = async (req, res) => {
+  const videoId = req.params.videoId
+  const userId = req.session.authUser ? req.session.authUser.userId : null
+
+  const log = await model.findLearningLog(userId, videoId)
+
+  res.send(log)
+}
+
+const storeLearningLog = (req, res) => {
+  const { videoId, status } = req.body
+
+  const userId = req.session.authUser ? req.session.authUser.userId : null
+  model.storeLearningLog(userId, videoId, status)
+
+  res.send('ok')
+}
+
+module.exports = {
+  interaction,
+  pageTransition,
+  getLearningLog,
+  storeLearningLog
+}

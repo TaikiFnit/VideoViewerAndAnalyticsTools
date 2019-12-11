@@ -29,7 +29,13 @@
         >
           <button>&lt;&lt; 前の動画へ</button>
         </nuxt-link>
-        <button>学習完了</button>
+        <button
+          v-if="this.learningLog && this.learningLog.status == true"
+          @click="onClickLearningCompleted(false)"
+        >
+          未完了に戻す
+        </button>
+        <button v-else @click="onClickLearningCompleted(true)">学習完了</button>
         <nuxt-link
           v-if="video.order < lesson.videos.length"
           :to="`/lessons/${lesson.slug}/${video.order + 1}`"
@@ -37,6 +43,9 @@
           <button>次の動画へ &gt;&gt;</button>
         </nuxt-link>
       </div>
+      <form>
+        
+      </form>
     </section>
     <aside>
       <h2>動画一覧</h2>
@@ -66,8 +75,9 @@ export default {
     const order = params.video
     const video = await $axios.$get(`/api/lessons/${slug}/${order}`)
     const lesson = await $axios.$get(`/api/lessons/${slug}`)
-    console.log(video)
-    return { video, lesson }
+    const learningLog = await $axios.$get(`/api/logs/learning/${video.id}`)
+
+    return { video, lesson, learningLog }
   },
   methods: {
     // 再生スタートした際に発火
@@ -98,6 +108,16 @@ export default {
         videoId: this.video.id,
         tempId: this.$store.state.tempId
       })
+    },
+    async onClickLearningCompleted(status) {
+      await this.$axios.$post('/api/logs/learning', {
+        videoId: this.video.id,
+        status
+      })
+      const learningLog = await this.$axios.$get(
+        `/api/logs/learning/${this.video.id}`
+      )
+      this.learningLog = learningLog
     }
   }
 }

@@ -22,4 +22,16 @@ module.exports = class LogModel {
       host
     )
   }
+
+  async findLearningLog(userId, videoId) {
+    const log = (
+      await this.databaseMapper.findLearningRecord(userId, videoId)
+    )[0]
+
+    return log
+  }
+
+  storeLearningLog(userId, videoId, status) {
+    this.databaseMapper.storeLearningRecord(userId, videoId, status)
+  }
 }
