@@ -15,6 +15,19 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  color: #263238;
+}
+
+a:link {
+  color: #0d47a1;
+}
+
+a:visited {
+  color: #311b92;
+}
+
+section {
+  margin: 15px 0;
 }
 
 *,
@@ -22,6 +35,10 @@ html {
 *:after {
   box-sizing: border-box;
   margin: 0;
+}
+
+button {
+  font-size: 14px;
 }
 
 .button--green {
@@ -51,5 +68,9 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+
+.button-group button {
+  margin: 0;
 }
 </style>

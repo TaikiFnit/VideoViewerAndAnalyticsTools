@@ -22,63 +22,72 @@
         @ended="ended"
         class="player"
       />
-      <div>
+      <div class="button-group">
         <nuxt-link
           v-if="video.order > 1"
           :to="`/lessons/${lesson.slug}/${video.order - 1}`"
         >
-          <button>&lt;&lt; 前の動画へ</button>
+          <button class="button--grey">&lt;&lt; 前の動画へ</button>
         </nuxt-link>
         <button
-          v-if="this.learningLog && this.learningLog.status == true"
+          v-if="learningLog && learningLog.status == true"
           @click="onClickLearningCompleted(false)"
+          class="button--green"
         >
           未完了に戻す
         </button>
-        <button v-else @click="onClickLearningCompleted(true)">学習完了</button>
+        <button
+          v-else
+          @click="onClickLearningCompleted(true)"
+          class="button--green"
+        >
+          学習完了
+        </button>
         <nuxt-link
           v-if="video.order < lesson.videos.length"
           :to="`/lessons/${lesson.slug}/${video.order + 1}`"
         >
-          <button>次の動画へ &gt;&gt;</button>
+          <button class="button--grey">次の動画へ &gt;&gt;</button>
         </nuxt-link>
       </div>
-      <form
-        v-if="this.learningLog && this.learningLog.status == true"
-        @submit.prevent="submitFeedback"
-      >
+      <section v-if="learningLog && learningLog.status == true">
         <h3>学習のつまずきに関するアンケート</h3>
-        <p>
-          この動画の学習を終えて学習や作業につまずいた点や理解が難しかった点,
-          または動画通りにうまく行かなかった点を教えてください.
-          (あればあるだけ.)
-        </p>
-        <p>
-          記入する際は
-          具体的に動画内の何秒時点のどこにつまずいたかを書いてもらえるとありがたいです.
-          (記入する内容はどんなに小さなことやささいなつまずき等でも構いません)
-        </p>
-        <p>
-          記入例:
-          1.動画内0:23-0:45のウェブサイトの解説でウェブサイトを探すのに手間取った,
-          2.動画内2:00-3:00のプログラムの意味を理解することができなかった. など
-        </p>
-        <textarea
-          id="feedbackForm"
-          v-model="feedbackForm"
-          name="feedbackForm"
-          cols="120"
-          rows="10"
-        ></textarea>
-        <button type="submit">送信する</button>
-        <p>
-          ※アンケートは何度でも送信できます.
-          つまずき等が発生しだい逐次送ってもらう形でも大丈夫です.
-        </p>
-      </form>
+        <form @submit.prevent="submitFeedback">
+          <p>
+            この動画の学習を終えて学習や作業につまずいた点や理解が難しかった点,
+            または動画通りにうまく行かなかった点を教えてください.
+            (あればあるだけ.)
+          </p>
+          <p>
+            記入する際は
+            具体的に動画内の何秒時点のどこにつまずいたかを書いてもらえるとありがたいです.
+            (記入する内容はどんなに小さなことやささいなつまずき等でも構いません)
+          </p>
+          <p>
+            記入例:
+            1.動画内0:23-0:45のウェブサイトの解説でウェブサイトを探すのに手間取った,
+            2.動画内2:00-3:00のプログラムの意味を理解することができなかった.
+            など
+          </p>
+          <div>
+            <textarea
+              id="feedbackForm"
+              v-model="feedbackForm"
+              name="feedbackForm"
+              cols="124"
+              rows="25"
+            ></textarea>
+          </div>
+          <button class="button--green" type="submit">送信する</button>
+          <p>
+            ※アンケートは何度でも送信できます.
+            つまずき等が発生しだい逐次送ってもらう形でも大丈夫です.
+          </p>
+        </form>
+      </section>
     </section>
     <aside>
-      <h2>動画一覧</h2>
+      <h3>動画一覧</h3>
       <ol>
         <li v-for="video in lesson.videos">
           <h4>
@@ -118,22 +127,16 @@ export default {
     // 再生スタートした際に発火
     async playing() {
       const time = await this.player.getCurrentTime()
-      console.log('playing')
-      console.log(time)
       this.record_watch_events('START', time)
     },
     // 一時停止した際に発火
     async paused() {
       const time = await this.player.getCurrentTime()
-      console.log('paused')
-      console.log(time)
       this.record_watch_events('STOP', time)
     },
     // 再生終了した際に発火
     async ended() {
       const time = await this.player.getCurrentTime()
-      console.log('ended')
-      console.log(time)
       this.record_watch_events('END', time)
     },
     async record_watch_events(type, time) {

@@ -20,7 +20,6 @@ export const actions = {
     }
   },
   async login({ commit }, { username, password }) {
-    console.log('login')
     try {
       const data = await this.$axios.$post('/api/login', {
         username,

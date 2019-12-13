@@ -17,7 +17,6 @@ const interaction = (req, res) => {
 
 const pageTransition = (req, res) => {
   console.log('page transition')
-  console.log(req.body)
 
   const host = req.headers.host
   const userId = req.session.authUser ? req.session.authUser.userId : null

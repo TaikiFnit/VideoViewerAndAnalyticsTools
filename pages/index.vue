@@ -44,7 +44,6 @@ export default {
   },
   methods: {
     async login() {
-      console.log('login')
       try {
         await this.$store.dispatch('login', {
           username: this.formUsername,
