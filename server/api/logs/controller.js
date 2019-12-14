@@ -4,9 +4,6 @@ const Model = require('./model')
 const model = new Model(new DatabaseMapper())
 
 const interaction = (req, res) => {
-  console.log('interaction')
-  console.log(req.body)
-
   const { type, time, videoId, tempId } = req.body
   const userId = req.session.authUser ? req.session.authUser.userId : null
 
@@ -16,8 +13,6 @@ const interaction = (req, res) => {
 }
 
 const pageTransition = (req, res) => {
-  console.log('page transition')
-
   const host = req.headers.host
   const userId = req.session.authUser ? req.session.authUser.userId : null
   const { path, isSsr, tempId } = req.body

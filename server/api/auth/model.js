@@ -1,6 +1,5 @@
 module.exports = class AuthModel {
   constructor(databaseMapper) {
-    console.log('model constructed')
     this.databaseMapper = databaseMapper
   }
 

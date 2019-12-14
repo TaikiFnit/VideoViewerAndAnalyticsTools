@@ -27,10 +27,4 @@ module.exports = class LessonModel {
 
     return video
   }
-
-  async test() {
-    console.log('model tested')
-    const result = await this.databaseMapper.test()
-    return result
-  }
 }
