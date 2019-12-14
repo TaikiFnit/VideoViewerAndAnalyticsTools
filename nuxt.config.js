@@ -54,9 +54,7 @@ module.exports = {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {
-    baseUrl: process.env.BASE_URL
-  },
+  axios: {},
   /*
    ** markdownit module configuration
    ** See https://github.com/markdown-it/markdown-it
