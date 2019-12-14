@@ -17,7 +17,7 @@ module.exports = {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   server: {
-    port: 80,
+    port: 3000,
     host: '0.0.0.0'
   },
   /*
@@ -54,7 +54,9 @@ module.exports = {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseUrl: process.env.BASE_URL
+  },
   /*
    ** markdownit module configuration
    ** See https://github.com/markdown-it/markdown-it

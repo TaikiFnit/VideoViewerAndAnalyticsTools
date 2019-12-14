@@ -77,9 +77,6 @@ module.exports = class LessonDatabaseMapper {
       host
     ])
 
-    console.log('result')
-    console.log(result)
-
     return result
   }
 
