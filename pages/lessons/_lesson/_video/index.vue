@@ -16,7 +16,6 @@
         id="player"
         ref="youtube"
         :video-id="video.youtube_id"
-        :resize="true"
         @playing="playing"
         @paused="paused"
         @ended="ended"
