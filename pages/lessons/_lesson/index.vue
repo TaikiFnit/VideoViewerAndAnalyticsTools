@@ -10,6 +10,7 @@
     <p>{{ lesson.summary }}</p>
     <section v-html="$md.render(lesson.description)" />
     <h3>動画</h3>
+    <p v-if="lesson.videos.length === 0">準備中</p>
     <ol>
       <li v-for="video in lesson.videos">
         <h4>
