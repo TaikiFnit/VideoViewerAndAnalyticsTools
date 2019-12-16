@@ -46,6 +46,7 @@ button {
   border-radius: 4px;
   border: 1px solid #3b8070;
   color: #3b8070;
+  background: white;
   text-decoration: none;
   padding: 10px 30px;
 }
@@ -60,6 +61,7 @@ button {
   border-radius: 4px;
   border: 1px solid #35495e;
   color: #35495e;
+  background: white;
   text-decoration: none;
   padding: 10px 30px;
   margin-left: 15px;
