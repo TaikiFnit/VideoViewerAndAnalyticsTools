@@ -34,6 +34,29 @@ module.exports = class LessonDatabaseMapper {
     return result
   }
 
+  async fetchAllVideos() {
+    const sql = `
+      select
+        lesson_videos.id,
+        lesson_videos.youtube_id,
+        lesson_videos.title,
+        lesson_videos.description,
+        lesson_videos.summary,
+        lesson_videos.order,
+        lessons.id as LessonId,
+        lessons.title as lessonTitle,
+        lessons.description as lessonDescription,
+        lessons.summary as lessonSummary,
+        lessons.slug
+      from
+        lesson_videos
+      inner join
+        lessons on lessons.id = lesson_videos.lesson_id;`
+
+    const result = await this.database.execute(sql)
+    return result
+  }
+
   async fetchVideosByLessonId(lessonId) {
     const sql = 'select * from lesson_videos where lesson_id = ?'
     const result = await this.database.execute(sql, [lessonId])

@@ -13,6 +13,7 @@ router.get('/api/lessons/', lessonsController.index)
 router.get('/api/lessons/:lessonSlug', lessonsController.show)
 router.get('/api/lessons/:lessonSlug/:videoOrder', lessonsController.video)
 
+router.get('/api/videos', videosController.index)
 router.get('/api/videos/:videoId', videosController.show)
 
 router.post('/api/logs/interaction', logsController.interaction)
