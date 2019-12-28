@@ -156,7 +156,41 @@ module.exports = class LessonDatabaseMapper {
       values
         (?, ?, ?, ?, now());`
 
-    const result = await this.database.execute(sql, [feedback, videoId, userId, tempId])
+    const result = await this.database.execute(sql, [
+      feedback,
+      videoId,
+      userId,
+      tempId
+    ])
+    return result
+  }
+
+  async storeSectionSequence(name, type) {
+    const sql = `
+      insert into analytics_section_sequence(name, type, created_at) values(?, ?, now());
+    `
+
+    const result = await this.database.execute(sql, [name, type])
+
+    console.log(result)
+
+    return result.insertId
+  }
+
+  async storeSection(videoId, sequenceId, section) {
+    const sql = `
+      insert into analytics_sections(video_id, section_sequence_id, timeTo, timeFrom, name, time_order, created_at) values(?, ?, ?, ?, ?, ?, now());
+    `
+
+    const result = await this.database.execute(sql, [
+      videoId,
+      sequenceId,
+      section.timeTo,
+      section.timeFrom,
+      section.name,
+      section.time_order
+    ])
+
     return result
   }
 }

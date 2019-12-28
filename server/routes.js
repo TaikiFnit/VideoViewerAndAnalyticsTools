@@ -5,6 +5,7 @@ const authController = require('./api/auth/controller')
 const lessonsController = require('./api/lessons/controller')
 const videosController = require('./api/videos/controller')
 const logsController = require('./api/logs/controller')
+const analyticsController = require('./api/analytics/controller')
 
 router.post('/api/login', authController.login)
 router.post('/api/logout', authController.logout)
@@ -21,5 +22,7 @@ router.post('/api/logs/page_transition', logsController.pageTransition)
 router.get('/api/logs/learning/:videoId', logsController.getLearningLog)
 router.post('/api/logs/learning', logsController.storeLearningLog)
 router.post('/api/logs/feedback', logsController.storeFeedback)
+
+router.post('/api/analytics/sectioning', analyticsController.storeSectioning)
 
 module.exports = router

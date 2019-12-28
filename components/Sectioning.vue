@@ -1,0 +1,11 @@
+<template>
+  <youtube
+    id="player"
+    ref="youtube"
+    :video-id="videos[videoIndex].youtube_id"
+    @playing="playing"
+    @paused="paused"
+    @ended="ended"
+    class="player"
+  />
+</template>
