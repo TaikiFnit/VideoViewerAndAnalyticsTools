@@ -3,6 +3,11 @@ module.exports = class AnalyticsModel {
     this.databaseMapper = databaseMapper
   }
 
+  async getSections(sequenceId) {
+    const sections = await this.databaseMapper.fetchSectionsBy(sequenceId)
+    return sections
+  }
+
   async storeSections(videoId, name, type, sections) {
     const sequenceId = await this.databaseMapper.storeSectionSequence(
       name,

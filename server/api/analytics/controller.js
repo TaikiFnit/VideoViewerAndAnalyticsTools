@@ -3,6 +3,16 @@ const Model = require('./model')
 
 const model = new Model(new DatabaseMapper())
 
+const getSectioning = async (req, res) => {
+  const sequenceId = req.params.sequenceId
+  console.log('getsections')
+  console.log(sequenceId)
+  const sections = await model.getSections(sequenceId)
+  console.log(sections)
+
+  res.send(sections)
+}
+
 const storeSectioning = async (req, res) => {
   const name = req.body.name
   const type = req.body.type
@@ -15,9 +25,10 @@ const storeSectioning = async (req, res) => {
 
 const getSectioningSequence = async (req, res) => {
   const videoId = req.params.videoId
-  const result = await model.getSectionSequence(videoId)
+  const sequence = await model.getSectionSequence(videoId)
+  console.log(sequence)
 
-  res.send(result)
+  res.send(sequence)
 }
 
-module.exports = { storeSectioning, getSectioningSequence }
+module.exports = { getSectioning, storeSectioning, getSectioningSequence }

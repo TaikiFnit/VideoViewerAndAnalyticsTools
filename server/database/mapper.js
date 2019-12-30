@@ -199,6 +199,23 @@ module.exports = class LessonDatabaseMapper {
     return result.insertId
   }
 
+  async fetchSectionsBy(sequenceId) {
+    const sql = `
+      select
+        analytics_sections.*
+      from
+        analytics_sections
+      where
+        analytics_sections.section_sequence_id = ?
+      order by
+        analytics_sections.time_order asc;
+    `
+
+    const result = await this.database.execute(sql, [sequenceId])
+
+    return result
+  }
+
   async storeSection(videoId, sequenceId, section) {
     const sql = `
       insert into analytics_sections(video_id, section_sequence_id, timeTo, timeFrom, name, time_order, created_at) values(?, ?, ?, ?, ?, ?, now());

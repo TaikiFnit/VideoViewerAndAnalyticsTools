@@ -24,6 +24,10 @@ router.get('/api/logs/learning/:videoId', logsController.getLearningLog)
 router.post('/api/logs/learning', logsController.storeLearningLog)
 router.post('/api/logs/feedback', logsController.storeFeedback)
 
+router.get(
+  '/api/analytics/sectioning/:sequenceId',
+  analyticsController.getSectioning
+)
 router.post('/api/analytics/sectioning', analyticsController.storeSectioning)
 router.get(
   '/api/analytics/sectioning_sequences/:videoId',
