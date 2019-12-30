@@ -233,7 +233,6 @@ export default {
   },
   async asyncData({ params, error, $axios }) {
     const videos = await $axios.$get('/api/videos')
-    console.log(videos)
     return { videos }
   },
   methods: {

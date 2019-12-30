@@ -15,6 +15,7 @@ router.get('/api/lessons/:lessonSlug', lessonsController.show)
 router.get('/api/lessons/:lessonSlug/:videoOrder', lessonsController.video)
 
 router.get('/api/videos', videosController.index)
+router.get('/api/videos/analyzable', videosController.analyzable)
 router.get('/api/videos/:videoId', videosController.show)
 
 router.post('/api/logs/interaction', logsController.interaction)
@@ -24,5 +25,9 @@ router.post('/api/logs/learning', logsController.storeLearningLog)
 router.post('/api/logs/feedback', logsController.storeFeedback)
 
 router.post('/api/analytics/sectioning', analyticsController.storeSectioning)
+router.get(
+  '/api/analytics/sectioning_sequences/:videoId',
+  analyticsController.getSectioningSequence
+)
 
 module.exports = router

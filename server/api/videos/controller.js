@@ -13,4 +13,9 @@ const show = async (req, res) => {
   res.send(result)
 }
 
-module.exports = { index, show }
+const analyzable = async (req, res) => {
+  const result = await model.findAllAnalyzableVideos()
+  res.send(result)
+}
+
+module.exports = { index, show, analyzable }

@@ -13,4 +13,11 @@ const storeSectioning = async (req, res) => {
   res.send('ok')
 }
 
-module.exports = { storeSectioning }
+const getSectioningSequence = async (req, res) => {
+  const videoId = req.params.videoId
+  const result = await model.getSectionSequence(videoId)
+
+  res.send(result)
+}
+
+module.exports = { storeSectioning, getSectioningSequence }

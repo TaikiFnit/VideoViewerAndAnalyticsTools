@@ -69,6 +69,30 @@ module.exports = class LessonDatabaseMapper {
     return result
   }
 
+  async fetchVideosByIds(ids) {
+    const sql = `
+      select
+        lesson_videos.id,
+        lesson_videos.youtube_id,
+        lesson_videos.title,
+        lesson_videos.description,
+        lesson_videos.summary,
+        lesson_videos.order,
+        lessons.id as LessonId,
+        lessons.title as lessonTitle,
+        lessons.description as lessonDescription,
+        lessons.summary as lessonSummary,
+        lessons.slug
+      from
+        lesson_videos
+      inner join
+        lessons on lessons.id = lesson_videos.lesson_id
+      where
+        lesson_videos.id in (${ids.join(',')});`
+    const result = await this.database.execute(sql)
+    return result
+  }
+
   async fetchVideoByLessonSlugAndOrder(slug, order) {
     const sql = `
       select
@@ -165,14 +189,12 @@ module.exports = class LessonDatabaseMapper {
     return result
   }
 
-  async storeSectionSequence(name, type) {
+  async storeSectionSequence(name, type, videoId) {
     const sql = `
-      insert into analytics_section_sequence(name, type, created_at) values(?, ?, now());
+      insert into analytics_section_sequence(name, type, video_id, created_at) values(?, ?, ?, now());
     `
 
-    const result = await this.database.execute(sql, [name, type])
-
-    console.log(result)
+    const result = await this.database.execute(sql, [name, type, videoId])
 
     return result.insertId
   }
@@ -190,6 +212,35 @@ module.exports = class LessonDatabaseMapper {
       section.name,
       section.time_order
     ])
+
+    return result
+  }
+
+  async fetchSectionSequencesOf(type) {
+    const sql = `
+      select
+        analytics_section_sequence.*
+      from
+        analytics_section_sequence
+      where
+        analytics_section_sequence.type = ?;`
+
+    const result = await this.database.execute(sql, [type])
+
+    return result
+  }
+
+  async fetchSectionSequenceBy(videoId, type) {
+    const sql = `
+      select
+        analytics_section_sequence.*
+      from
+        analytics_section_sequence
+      where
+        analytics_section_sequence.video_id = ? and
+        analytics_section_sequence.type = ?`
+
+    const result = await this.database.execute(sql, [videoId, type])
 
     return result
   }

@@ -8,8 +8,8 @@
         </nuxt-link>
       </li>
       <li>
-        <nuxt-link to="/analytics/analyze">
-          2. 分析
+        <nuxt-link to="/analytics/video_analyze">
+          2. 動画視聴ログ分析
         </nuxt-link>
       </li>
     </ul>
