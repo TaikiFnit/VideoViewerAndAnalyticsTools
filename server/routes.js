@@ -38,5 +38,6 @@ router.get(
   analyticsController.getTargetUsers
 )
 router.post('/api/analytics/start', analyticsController.startAnalyze)
+router.get('/api/analytics/results/:resultId', analyticsController.getResult)
 
 module.exports = router

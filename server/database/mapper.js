@@ -291,6 +291,20 @@ module.exports = class LessonDatabaseMapper {
     return result
   }
 
+  async findSectionSequence(id) {
+    const sql = `
+      select
+        analytics_section_sequence.*
+      from
+        analytics_section_sequence
+      where
+        analytics_section_sequence.id = ?;
+    `
+
+    const result = await this.database.execute(sql, [id])
+    return result
+  }
+
   async fetchSectionSequencesOf(type) {
     const sql = `
       select
@@ -396,5 +410,122 @@ module.exports = class LessonDatabaseMapper {
     ])
 
     return result.insertId
+  }
+
+  async fetchAnalyticsResult(resultId) {
+    const sql = `
+      select
+        *
+      from
+        analytics_results
+      where
+        analytics_results.id = ?;
+    `
+
+    const result = await this.database.execute(sql, [resultId])
+    return result
+  }
+
+  async fetchAnalyticsResultTargetUser(resultId) {
+    const sql = `
+      select
+        users.id,
+        users.name
+      from
+        analytics_result_target_users
+      inner join
+        users on users.id = analytics_result_target_users.user_id
+      where
+        analytics_result_target_users.analytics_result_id = ?;
+    `
+
+    const result = await this.database.execute(sql, [resultId])
+    return result
+  }
+
+  async fetchAnalyticsResultFilteredInteractionLog(resultId) {
+    const sql = `
+      select
+        video_player_interaction_logs.*
+      from
+        analytics_result_filtered_interaction_logs
+      inner join
+        video_player_interaction_logs on
+        video_player_interaction_logs.id = analytics_result_filtered_interaction_logs.video_player_interaction_log_id
+      where
+        analytics_result_filtered_interaction_logs.analytics_result_id = ?;
+    `
+
+    const result = await this.database.execute(sql, [resultId])
+    return result
+  }
+
+  async storeAnalyticsResultsAggregation(analyticsResultId, sectionId) {
+    const sql = `
+      insert into
+        analytics_results_aggregation(analytics_result_id, analytics_section_id, log_count, created_at)
+      values
+        (?, ?,
+        (
+          select
+            count(*) as logCount
+          from
+            (
+              select
+                video_player_interaction_logs.*
+              from
+                analytics_result_filtered_interaction_logs
+              inner join
+                video_player_interaction_logs on
+                video_player_interaction_logs.id = analytics_result_filtered_interaction_logs.video_player_interaction_log_id
+              where
+                analytics_result_filtered_interaction_logs.analytics_result_id = ?) as filteredInteractionLogs,
+                (
+                  select
+                    analytics_sections.*
+                  from
+                    analytics_sections
+                  where
+                    analytics_sections.id = ?
+            ) as targetSection
+          where
+            filteredInteractionLogs.video_time between targetSection.timeFrom and targetSection.timeTo
+        )
+        , now())`
+
+    const result = await this.database.execute(sql, [
+      analyticsResultId,
+      sectionId,
+      analyticsResultId,
+      sectionId
+    ])
+
+    return result.insertId
+  }
+
+  async fetchAnalyticsResultAggregationBy(analyticsResultId) {
+    const sql = `
+      select
+        analytics_results_aggregation.id,
+        analytics_results_aggregation.log_count,
+        analytics_results_aggregation.created_at,
+        analytics_sections.id as sectionId,
+        analytics_sections.name,
+        analytics_sections.timeFrom,
+        analytics_sections.timeTo,
+        analytics_sections.time_order
+      from
+        analytics_results_aggregation
+      inner join
+        analytics_sections on
+        analytics_sections.id = analytics_results_aggregation.analytics_section_id
+      where
+        analytics_results_aggregation.analytics_result_id = ?
+      order by
+        analytics_sections.time_order;
+    `
+
+    const result = await this.database.execute(sql, [analyticsResultId])
+    return result
   }
 }

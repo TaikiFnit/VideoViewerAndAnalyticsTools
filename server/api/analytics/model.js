@@ -101,6 +101,65 @@ module.exports = class AnalyticsModel {
       })
     )
 
+    // 分析結果保存: 分析Core(フィルターされたlogのcount)の実行&結果の保存
+    // do each sections
+    const sections = await this.databaseMapper.fetchSectionsBy(
+      sectionSequenceId
+    )
+
+    Promise.all(
+      sections.map(async (section) => {
+        const resultId = await this.databaseMapper.storeAnalyticsResultsAggregation(
+          analyticsResultId,
+          section.id
+        )
+        return resultId
+      })
+    )
+
     return analyticsResultId
+  }
+
+  async getResult(resultId) {
+    const analyticsResult = (
+      await this.databaseMapper.fetchAnalyticsResult(resultId)
+    )[0]
+
+    const targetUsers = await this.databaseMapper.fetchAnalyticsResultTargetUser(
+      resultId
+    )
+    const filteredInteractionLogs = await this.databaseMapper.fetchAnalyticsResultFilteredInteractionLog(
+      resultId
+    )
+    const visualTransitionSequence = (
+      await this.databaseMapper.findSectionSequence(
+        analyticsResult.visual_transition_sequence_id
+      )
+    )[0]
+    const sectionSequence = (
+      await this.databaseMapper.findSectionSequence(
+        analyticsResult.section_sequence_id
+      )
+    )[0]
+    const visualTransitions = await this.databaseMapper.fetchSectionsBy(
+      visualTransitionSequence.id
+    )
+    const sections = await this.databaseMapper.fetchSectionsBy(
+      sectionSequence.id
+    )
+    const aggregation = await this.databaseMapper.fetchAnalyticsResultAggregationBy(
+      analyticsResult.id
+    )
+
+    return {
+      ...analyticsResult,
+      targetUsers,
+      filteredInteractionLogs,
+      visualTransitionSequence,
+      sectionSequence,
+      visualTransitions,
+      sections,
+      aggregation
+    }
   }
 }

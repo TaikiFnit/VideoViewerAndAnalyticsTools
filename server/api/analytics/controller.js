@@ -52,10 +52,19 @@ const startAnalyze = async (req, res) => {
   res.send({ resultId })
 }
 
+const getResult = async (req, res) => {
+  const resultId = req.params.resultId
+
+  const result = await model.getResult(resultId)
+
+  res.send(result)
+}
+
 module.exports = {
   getSectioning,
   storeSectioning,
   getSectioningSequence,
   getTargetUsers,
-  startAnalyze
+  startAnalyze,
+  getResult
 }
