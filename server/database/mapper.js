@@ -261,4 +261,29 @@ module.exports = class LessonDatabaseMapper {
 
     return result
   }
+
+  async fetchUsersForAnalytics(videoId) {
+    const sql = `
+      select
+        users.id,
+        users.name,
+        users.created_at,
+        count(video_player_interaction_logs.user_id) as countInteractions,
+        max(learning_records.status) as learningCompleted
+      from
+        video_player_interaction_logs
+      inner join
+        users on video_player_interaction_logs.user_id = users.id
+      left join
+        learning_records on video_player_interaction_logs.user_id = learning_records.user_id and learning_records.lesson_video_id = video_player_interaction_logs.video_id
+      where
+        video_player_interaction_logs.video_id = ?
+      group by
+        video_player_interaction_logs.user_id;
+    `
+
+    const result = await this.database.execute(sql, [videoId])
+
+    return result
+  }
 }

@@ -5,10 +5,7 @@ const model = new Model(new DatabaseMapper())
 
 const getSectioning = async (req, res) => {
   const sequenceId = req.params.sequenceId
-  console.log('getsections')
-  console.log(sequenceId)
   const sections = await model.getSections(sequenceId)
-  console.log(sections)
 
   res.send(sections)
 }
@@ -26,9 +23,39 @@ const storeSectioning = async (req, res) => {
 const getSectioningSequence = async (req, res) => {
   const videoId = req.params.videoId
   const sequence = await model.getSectionSequence(videoId)
-  console.log(sequence)
 
   res.send(sequence)
 }
 
-module.exports = { getSectioning, storeSectioning, getSectioningSequence }
+const getTargetUsers = async (req, res) => {
+  const videoId = req.params.videoId
+  const users = await model.getTargetUsers(videoId)
+
+  res.send(users)
+}
+
+const startAnalyze = async (req, res) => {
+  const {
+    videoId,
+    sectionSequenceId,
+    visualTransitionSequenceId,
+    selectedUsers
+  } = req.body
+
+  const result = await model.startAnalyze(
+    videoId,
+    sectionSequenceId,
+    visualTransitionSequenceId,
+    selectedUsers
+  )
+
+  res.send(result)
+}
+
+module.exports = {
+  getSectioning,
+  storeSectioning,
+  getSectioningSequence,
+  getTargetUsers,
+  startAnalyze
+}

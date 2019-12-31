@@ -115,6 +115,26 @@
     </fieldset>
     <fieldset v-if="isSelectedSequences">
       <legend>2.3 分析対象を選択してください</legend>
+      <h3>対象のユーザー</h3>
+      <ul>
+        <li v-for="(user, index) in targets.masterUsers" :key="index">
+          <input
+            v-model="targets.selectedUsers"
+            :value="user.id"
+            :id="user.id"
+            type="checkbox"
+          />
+          <label :for="user.id">
+            {{ user.name }}
+            <p>学習完了済み: {{ user.learningCompleted ? 'Yes' : 'No' }}</p>
+            <p>イベント発生回数: {{ user.countInteractions }}</p>
+          </label>
+        </li>
+      </ul>
+    </fieldset>
+    <fieldset v-if="isSelectedSequences">
+      <legend>2.4 分析開始</legend>
+      <button @click="onClickStartAnalyze">分析開始</button>
     </fieldset>
   </div>
 </template>
@@ -130,6 +150,10 @@ export default {
       sections: {
         sections: [],
         visualTransitions: []
+      },
+      targets: {
+        masterUsers: [],
+        selectedUsers: []
       }
     }
   },
@@ -142,12 +166,15 @@ export default {
     }
   },
   watch: {
-    videoIndex(newVideoIndex, oldVideoIndex) {
+    async videoIndex(newVideoIndex, oldVideoIndex) {
       const video = this.videos[newVideoIndex]
       this.fetchVideoSequences(video.id)
+
+      this.targets.masterUsers = await this.$axios.$get(
+        `/api/analytics/target_users/${video.id}`
+      )
     },
     async sectionSequenceId(newId, oldId) {
-      console.log(await this.$axios.$get(`/api/analytics/sectioning/${newId}`))
       this.sections.sections = await this.$axios.$get(
         `/api/analytics/sectioning/${newId}`
       )
@@ -178,6 +205,16 @@ export default {
       this.sequences = sequences
       this.sectionSequenceId = null
       this.visualTransitionSequenceId = null
+    },
+    onClickStartAnalyze() {
+      const data = {
+        videoId: this.videos[this.videoIndex].id,
+        selectedUsers: this.targets.selectedUsers,
+        sectionSequenceId: this.sectionSequenceId,
+        visualTransitionSequenceId: this.visualTransitionSequenceId
+      }
+
+      this.$axios.$post('/api/analytics/start', data)
     }
   }
 }

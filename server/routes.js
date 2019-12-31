@@ -33,5 +33,10 @@ router.get(
   '/api/analytics/sectioning_sequences/:videoId',
   analyticsController.getSectioningSequence
 )
+router.get(
+  '/api/analytics/target_users/:videoId',
+  analyticsController.getTargetUsers
+)
+router.post('/api/analytics/start', analyticsController.startAnalyze)
 
 module.exports = router

@@ -44,4 +44,21 @@ module.exports = class AnalyticsModel {
 
     return sectionSequences
   }
+
+  async getTargetUsers(videoId) {
+    const users = await this.databaseMapper.fetchUsersForAnalytics(videoId)
+    return users
+  }
+
+  async startAnalyze(
+    videoId,
+    sectionSequenceId,
+    visualTransitionSequenceId,
+    selectedUsers
+  ) {
+    console.log(videoId)
+    console.log(sectionSequenceId)
+    console.log(visualTransitionSequenceId)
+    console.log(selectedUsers)
+  }
 }
