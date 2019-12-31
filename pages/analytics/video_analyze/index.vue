@@ -134,7 +134,22 @@
     </fieldset>
     <fieldset v-if="isSelectedSequences">
       <legend>2.4 分析開始</legend>
-      <button @click="onClickStartAnalyze">分析開始</button>
+      <button @click="onClickStartAnalyze" :disabled="resultId !== null">
+        分析開始
+      </button>
+    </fieldset>
+    <fieldset v-if="resultId !== null">
+      <legend>2.5 分析完了</legend>
+      <p>
+        分析が完了しました. 分析結果は, <strong>ID={{ resultId }}</strong
+        >として保存されました.
+      </p>
+      <p>
+        分析結果は,
+        <nuxt-link :to="`/analytics/results/${resultId}`"
+          >分析結果ページ</nuxt-link
+        >から閲覧することができます.
+      </p>
     </fieldset>
   </div>
 </template>
@@ -154,7 +169,8 @@ export default {
       targets: {
         masterUsers: [],
         selectedUsers: []
-      }
+      },
+      resultId: null
     }
   },
   computed: {
@@ -214,9 +230,10 @@ export default {
         visualTransitionSequenceId: this.visualTransitionSequenceId
       }
 
-      const resultId = await this.$axios.$post('/api/analytics/start', data)
+      const result = await this.$axios.$post('/api/analytics/start', data)
       console.log('finnnnnnaly we got result id')
-      console.log(resultId)
+      console.log(result)
+      this.resultId = result.resultId
     }
   }
 }

@@ -12,6 +12,11 @@
           2. 動画視聴ログ分析
         </nuxt-link>
       </li>
+      <li>
+        <nuxt-link to="/analytics/results">
+          3. 分析結果一覧
+        </nuxt-link>
+      </li>
     </ul>
   </div>
 </template>

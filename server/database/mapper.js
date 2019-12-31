@@ -144,7 +144,7 @@ module.exports = class LessonDatabaseMapper {
         video_player_interaction_logs.user_id = ${userId} and
         video_player_interaction_logs.video_id = ${videoId} and
         video_player_interaction_logs.type = "START" and
-        video_player_interaction_logs.created_at > coalesce(
+        video_player_interaction_logs.created_at < coalesce(
           (select
             learning_records.created_at
           from
@@ -156,7 +156,7 @@ module.exports = class LessonDatabaseMapper {
           order by
             learning_records.created_at desc
           limit
-            1), 0)`
+            1), now())`
       )
       .join(' union ')
 
