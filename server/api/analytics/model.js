@@ -56,9 +56,51 @@ module.exports = class AnalyticsModel {
     visualTransitionSequenceId,
     selectedUsers
   ) {
-    console.log(videoId)
-    console.log(sectionSequenceId)
-    console.log(visualTransitionSequenceId)
-    console.log(selectedUsers)
+    // 1. 画面遷移のsectionを抽出
+    // input: visualTransitionSequenceId
+    // output: [SECTION]
+    const visualTransitions = await this.databaseMapper.fetchSectionsBy(
+      visualTransitionSequenceId
+    )
+
+    // 2. 画面遷移をfilteringしたinteraction logs (scoped with selected user)
+    // input: videoId, [userIds], [SECTION(timeTo, timeFrom), removeMargin]
+    const interactionLogs = await this.databaseMapper.extractFilteredVideoPlayerInteractionLogs(
+      videoId,
+      selectedUsers,
+      visualTransitions,
+      2
+    )
+
+    // 分析結果保存: 分析条件の保存
+    const analyticsResultId = await this.databaseMapper.storeAnalyticsResult(
+      videoId,
+      sectionSequenceId,
+      visualTransitionSequenceId
+    )
+
+    // 分析結果保存: 分析対象ユーザーの保存
+    Promise.all(
+      selectedUsers.map(async (userId) => {
+        const resultId = await this.databaseMapper.storeAnalyticsResultTargetUser(
+          analyticsResultId,
+          userId
+        )
+        return resultId
+      })
+    )
+
+    // 分析結果保存: 分析結果(フィルターされたlog)の保存
+    Promise.all(
+      interactionLogs.map(async (interactionLog) => {
+        const resultId = await this.databaseMapper.storeAnalyticsResultFilteredInteractionLog(
+          analyticsResultId,
+          interactionLog.id
+        )
+        return resultId
+      })
+    )
+
+    return analyticsResultId
   }
 }

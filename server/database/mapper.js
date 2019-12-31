@@ -127,6 +127,64 @@ module.exports = class LessonDatabaseMapper {
     return result
   }
 
+  async extractFilteredVideoPlayerInteractionLogs(
+    videoId,
+    userIds,
+    sections,
+    removeMargin
+  ) {
+    const userInteractionLogExtractionSql = userIds
+      .map(
+        (userId) => `
+      select
+        video_player_interaction_logs.*
+      from
+        video_player_interaction_logs
+      where
+        video_player_interaction_logs.user_id = ${userId} and
+        video_player_interaction_logs.video_id = ${videoId} and
+        video_player_interaction_logs.type = "START" and
+        video_player_interaction_logs.created_at > coalesce(
+          (select
+            learning_records.created_at
+          from
+            learning_records
+          where
+            learning_records.user_id = ${userId} and
+            learning_records.status = 1 and
+            learning_records.lesson_video_id = ${videoId}
+          order by
+            learning_records.created_at desc
+          limit
+            1), 0)`
+      )
+      .join(' union ')
+
+    const filteringLogSql = sections
+      .map(
+        (section) =>
+          ` and usersInteractionLogs.video_time not between ${section.timeFrom -
+            removeMargin} and ${section.timeFrom + removeMargin}`
+      )
+      .join(' ')
+
+    const sql = `
+      select
+        *
+      from
+        (${userInteractionLogExtractionSql}) as usersInteractionLogs
+      where
+        usersInteractionLogs.type = "START"
+        ${filteringLogSql}
+    `
+
+    console.log('finally we can construct completed sql')
+    console.log(sql)
+
+    const result = await this.database.execute(sql, [videoId])
+    return result
+  }
+
   async storeVideoPlayerInteractionLog(
     videoId,
     videoTime,
@@ -285,5 +343,58 @@ module.exports = class LessonDatabaseMapper {
     const result = await this.database.execute(sql, [videoId])
 
     return result
+  }
+
+  async storeAnalyticsResult(
+    videoId,
+    sectionSequenceId,
+    visualTransitionSequenceId
+  ) {
+    const sql = `
+      insert into
+        analytics_results(video_id, section_sequence_id, visual_transition_sequence_id, created_at)
+      values
+        (?, ?, ?, now());
+    `
+
+    const result = await this.database.execute(sql, [
+      videoId,
+      sectionSequenceId,
+      visualTransitionSequenceId
+    ])
+
+    return result.insertId
+  }
+
+  async storeAnalyticsResultTargetUser(analyticsResultId, userId) {
+    const sql = `
+      insert into
+        analytics_result_target_users(analytics_result_id, user_id, created_at)
+      values
+        (?, ?, now());
+    `
+
+    const result = await this.database.execute(sql, [analyticsResultId, userId])
+
+    return result.insertId
+  }
+
+  async storeAnalyticsResultFilteredInteractionLog(
+    analyticsResultId,
+    interactionLogId
+  ) {
+    const sql = `
+      insert into
+        analytics_result_filtered_interaction_logs(analytics_result_id, video_player_interaction_log_id, created_at)
+      values
+        (?, ?, now());
+    `
+
+    const result = await this.database.execute(sql, [
+      analyticsResultId,
+      interactionLogId
+    ])
+
+    return result.insertId
   }
 }

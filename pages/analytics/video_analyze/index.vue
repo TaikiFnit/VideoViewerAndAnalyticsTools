@@ -206,7 +206,7 @@ export default {
       this.sectionSequenceId = null
       this.visualTransitionSequenceId = null
     },
-    onClickStartAnalyze() {
+    async onClickStartAnalyze() {
       const data = {
         videoId: this.videos[this.videoIndex].id,
         selectedUsers: this.targets.selectedUsers,
@@ -214,7 +214,9 @@ export default {
         visualTransitionSequenceId: this.visualTransitionSequenceId
       }
 
-      this.$axios.$post('/api/analytics/start', data)
+      const resultId = await this.$axios.$post('/api/analytics/start', data)
+      console.log('resultId')
+      console.log(resultId)
     }
   }
 }

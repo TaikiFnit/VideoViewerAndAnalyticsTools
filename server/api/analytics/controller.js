@@ -42,14 +42,14 @@ const startAnalyze = async (req, res) => {
     selectedUsers
   } = req.body
 
-  const result = await model.startAnalyze(
+  const resultId = await model.startAnalyze(
     videoId,
     sectionSequenceId,
     visualTransitionSequenceId,
     selectedUsers
   )
 
-  res.send(result)
+  res.send({ resultId })
 }
 
 module.exports = {
