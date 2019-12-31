@@ -39,14 +39,18 @@ const startAnalyze = async (req, res) => {
     videoId,
     sectionSequenceId,
     visualTransitionSequenceId,
-    selectedUsers
+    selectedUsers,
+    removeMargin,
+    analyzeName
   } = req.body
 
   const resultId = await model.startAnalyze(
     videoId,
     sectionSequenceId,
     visualTransitionSequenceId,
-    selectedUsers
+    selectedUsers,
+    removeMargin,
+    analyzeName
   )
 
   res.send({ resultId })

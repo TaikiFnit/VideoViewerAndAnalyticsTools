@@ -362,19 +362,23 @@ module.exports = class LessonDatabaseMapper {
   async storeAnalyticsResult(
     videoId,
     sectionSequenceId,
-    visualTransitionSequenceId
+    visualTransitionSequenceId,
+    removeMargin,
+    analyzeName
   ) {
     const sql = `
       insert into
-        analytics_results(video_id, section_sequence_id, visual_transition_sequence_id, created_at)
+        analytics_results(video_id, section_sequence_id, visual_transition_sequence_id, created_at, remove_margin, name)
       values
-        (?, ?, ?, now());
+        (?, ?, ?, now(), ?, ?);
     `
 
     const result = await this.database.execute(sql, [
       videoId,
       sectionSequenceId,
-      visualTransitionSequenceId
+      visualTransitionSequenceId,
+      removeMargin,
+      analyzeName
     ])
 
     return result.insertId

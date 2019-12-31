@@ -54,7 +54,9 @@ module.exports = class AnalyticsModel {
     videoId,
     sectionSequenceId,
     visualTransitionSequenceId,
-    selectedUsers
+    selectedUsers,
+    removeMargin,
+    analyzeName
   ) {
     // 1. 画面遷移のsectionを抽出
     // input: visualTransitionSequenceId
@@ -69,14 +71,16 @@ module.exports = class AnalyticsModel {
       videoId,
       selectedUsers,
       visualTransitions,
-      2
+      removeMargin
     )
 
     // 分析結果保存: 分析条件の保存
     const analyticsResultId = await this.databaseMapper.storeAnalyticsResult(
       videoId,
       sectionSequenceId,
-      visualTransitionSequenceId
+      visualTransitionSequenceId,
+      removeMargin,
+      analyzeName
     )
 
     // 分析結果保存: 分析対象ユーザーの保存
@@ -150,6 +154,11 @@ module.exports = class AnalyticsModel {
     const aggregation = await this.databaseMapper.fetchAnalyticsResultAggregationBy(
       analyticsResult.id
     )
+    const aggregationSum = aggregation.reduce(
+      (prev, current, index, array) => ({
+        log_count: prev.log_count + current.log_count
+      })
+    ).log_count
 
     return {
       ...analyticsResult,
@@ -159,7 +168,8 @@ module.exports = class AnalyticsModel {
       sectionSequence,
       visualTransitions,
       sections,
-      aggregation
+      aggregation,
+      aggregationSum
     }
   }
 }

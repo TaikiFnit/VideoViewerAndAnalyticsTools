@@ -114,8 +114,8 @@
       </section>
     </fieldset>
     <fieldset v-if="isSelectedSequences">
-      <legend>2.3 分析対象を選択してください</legend>
-      <h3>対象のユーザー</h3>
+      <legend>2.3 分析条件の指定</legend>
+      <h3>対象ユーザー</h3>
       <ul>
         <li v-for="(user, index) in targets.masterUsers" :key="index">
           <input
@@ -131,9 +131,27 @@
           </label>
         </li>
       </ul>
+      <h3>ノイズデータの取り除きしきい値(秒)</h3>
+      <p>
+        画面遷移発生時点はつまづきの有無にかかわらず視聴ピークが発生することが報告されています[1]<br />今回の分析において画面遷移発生時点から+-何秒時点までのデータを取り除くのか指定してください
+      </p>
+      <label><input v-model="removeMargin" type="number" />秒</label>
+      <p>
+        <small
+          >[1] Juho Kim, Philip J. Guo, Daniel T. Seaton, Piotr Mitros,
+          Krzysztof Z. Gajos, Robert C. Miller: Understanding In-Video Dropouts
+          and Interaction Peaks in Online Lecture Videos, L@S 2014 • Course
+          Materials, pp. 31-40 (2014)</small
+        >
+      </p>
     </fieldset>
     <fieldset v-if="isSelectedSequences">
       <legend>2.4 分析開始</legend>
+      <p>
+        <label
+          >分析結果に名前をつける: <input v-model="analyzeName" type="text"
+        /></label>
+      </p>
       <button @click="onClickStartAnalyze" :disabled="resultId !== null">
         分析開始
       </button>
@@ -170,7 +188,9 @@ export default {
         masterUsers: [],
         selectedUsers: []
       },
-      resultId: null
+      removeMargin: 1,
+      resultId: null,
+      analyzeName: '分析'
     }
   },
   computed: {
@@ -227,7 +247,9 @@ export default {
         videoId: this.videos[this.videoIndex].id,
         selectedUsers: this.targets.selectedUsers,
         sectionSequenceId: this.sectionSequenceId,
-        visualTransitionSequenceId: this.visualTransitionSequenceId
+        visualTransitionSequenceId: this.visualTransitionSequenceId,
+        removeMargin: this.removeMargin,
+        analyzeName: this.analyzeName
       }
 
       const result = await this.$axios.$post('/api/analytics/start', data)
