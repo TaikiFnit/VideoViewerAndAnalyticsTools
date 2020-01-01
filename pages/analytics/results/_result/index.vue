@@ -18,6 +18,8 @@
           #{{ result.video.order }} {{ result.video.title }} -
           {{ result.video.lessonTitle }}
         </dd>
+        <dt>動画ID</dt>
+        <dd>{{ result.video.id }}</dd>
       </dl>
     </section>
     <section>
