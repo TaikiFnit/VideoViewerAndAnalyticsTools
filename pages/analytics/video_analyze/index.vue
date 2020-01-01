@@ -1,15 +1,14 @@
 <template>
-  <div>
-    <ul>
-      <li>
-        <nuxt-link to="/analytics">
-          分析ツールTOP
-        </nuxt-link>
-        &gt; 動画のセクショニング
-      </li>
-    </ul>
-
-    <h1>2. 動画視聴ログ分析</h1>
+  <section>
+    <p>
+      <nuxt-link to="/">TOP</nuxt-link>
+      &gt;
+      <nuxt-link to="/analytics">
+        分析ツール TOP
+      </nuxt-link>
+      &gt; 動画視聴ログ分析
+    </p>
+    <h2>2. 動画視聴ログ分析</h2>
     <fieldset>
       <legend>2.1 分析に利用したい動画を選択してください</legend>
       <p>
@@ -169,7 +168,7 @@
         >から閲覧することができます.
       </p>
     </fieldset>
-  </div>
+  </section>
 </template>
 
 <script>

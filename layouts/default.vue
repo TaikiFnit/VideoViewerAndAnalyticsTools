@@ -41,6 +41,10 @@ button {
   font-size: 14px;
 }
 
+dt {
+  font-weight: bold;
+}
+
 .button--green {
   display: inline-block;
   border-radius: 4px;

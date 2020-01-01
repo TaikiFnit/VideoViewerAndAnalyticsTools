@@ -1,15 +1,15 @@
 <template>
-  <div>
-    <ul>
-      <li>
-        <nuxt-link to="/analytics">
-          分析ツールTOP
-        </nuxt-link>
-        &gt; 動画のセクショニング
-      </li>
-    </ul>
+  <section>
+    <p>
+      <nuxt-link to="/">TOP</nuxt-link>
+      &gt;
+      <nuxt-link to="/analytics">
+        分析ツール TOP
+      </nuxt-link>
+      &gt; 動画のセクショニング
+    </p>
 
-    <h1>1. 動画のセクショニング</h1>
+    <h2>1. 動画のセクショニング</h2>
     <fieldset>
       <legend>1.1 分析に利用したい動画を選択してください</legend>
       <select v-model="videoIndex">
@@ -21,11 +21,11 @@
       <section v-if="videoIndex != null">
         <h3>選択した動画について</h3>
         <dl>
-          <dt>動画ID</dt>
+          <dt>動画ID:</dt>
           <dd>{{ videos[videoIndex].id }}</dd>
-          <dt>動画名</dt>
+          <dt>動画名:</dt>
           <dd>{{ videos[videoIndex].title }}</dd>
-          <dt>レッスン名</dt>
+          <dt>レッスン名:</dt>
           <dd>{{ videos[videoIndex].lessonTitle }}</dd>
         </dl>
       </section>
@@ -195,7 +195,7 @@
         </button>
       </section>
     </fieldset>
-  </div>
+  </section>
 </template>
 
 <script>

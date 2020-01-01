@@ -23,6 +23,9 @@
       <div v-else>
         <p>Hello {{ $store.state.authUser.username }}!</p>
         <p><nuxt-link to="/lessons">レッスン一覧はこちら</nuxt-link></p>
+        <p>
+          <nuxt-link to="/analytics">分析ツールはこちら</nuxt-link>
+        </p>
       </div>
     </div>
   </div>

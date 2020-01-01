@@ -159,6 +159,9 @@ module.exports = class AnalyticsModel {
         log_count: prev.log_count + current.log_count
       })
     ).log_count
+    const video = (
+      await this.databaseMapper.fetchVideoById(analyticsResult.video_id)
+    )[0]
 
     return {
       ...analyticsResult,
@@ -169,7 +172,8 @@ module.exports = class AnalyticsModel {
       visualTransitions,
       sections,
       aggregation,
-      aggregationSum
+      aggregationSum,
+      video
     }
   }
 }
