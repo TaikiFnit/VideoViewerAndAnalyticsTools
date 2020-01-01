@@ -247,7 +247,7 @@ export default {
         selectedUsers: this.targets.selectedUsers,
         sectionSequenceId: this.sectionSequenceId,
         visualTransitionSequenceId: this.visualTransitionSequenceId,
-        removeMargin: this.removeMargin,
+        removeMargin: Number(this.removeMargin),
         analyzeName: this.analyzeName
       }
 
