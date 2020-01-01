@@ -426,6 +426,27 @@ module.exports = class LessonDatabaseMapper {
     return result.insertId
   }
 
+  async fetchAnalyticsResults() {
+    const sql = `
+      select
+        analytics_results.*,
+        lesson_videos.title as videoTitle,
+        lesson_videos.order,
+        lessons.title as lessonTitle
+      from
+        analytics_results
+      inner join
+        lesson_videos on lesson_videos.id = analytics_results.video_id
+      inner join
+        lessons on lessons.id = lesson_videos.lesson_id
+      order by
+        analytics_results.created_at desc
+    `
+
+    const result = await this.database.execute(sql)
+    return result
+  }
+
   async fetchAnalyticsResult(resultId) {
     const sql = `
       select

@@ -124,6 +124,11 @@ module.exports = class AnalyticsModel {
     return analyticsResultId
   }
 
+  async getResults() {
+    const analyticsResults = await this.databaseMapper.fetchAnalyticsResults()
+    return analyticsResults
+  }
+
   async getResult(resultId) {
     const analyticsResult = (
       await this.databaseMapper.fetchAnalyticsResult(resultId)

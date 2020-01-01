@@ -30,7 +30,7 @@
       </dd>
       <dt>ノイズデータの取り除きしきい値(秒):</dt>
       <dd>{{ result.remove_margin }}</dd>
-      <dt>分析実行時間:</dt>
+      <dt>分析実行日時:</dt>
       <dd>{{ formatDate(result.created_at) }}</dd>
       <dt>取り除きに利用した画面遷移</dt>
       <dd>
