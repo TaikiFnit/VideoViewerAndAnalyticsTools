@@ -47,29 +47,76 @@
     </section>
     <section>
       <h3>分析結果</h3>
-      <table border>
-        <tr>
-          <th>開始時間</th>
-          <th>終了時間</th>
-          <th>セクション名</th>
-          <th>イベント発生回数</th>
-        </tr>
-        <tr v-for="(aggregation, index) in result.aggregation" :key="index">
-          <td>{{ aggregation.timeFrom }}</td>
-          <td>{{ aggregation.timeTo }}</td>
-          <td>{{ aggregation.name }}</td>
-          <td>{{ aggregation.log_count }}</td>
-        </tr>
-      </table>
+      <section>
+        <h4>データ整形後分析結果</h4>
+        <table border>
+          <tr>
+            <th>開始時間</th>
+            <th>終了時間</th>
+            <th>セクション名</th>
+            <th>イベント発生回数</th>
+          </tr>
+          <tr v-for="(aggregation, index) in result.aggregation" :key="index">
+            <td>{{ aggregation.timeFrom }}</td>
+            <td>{{ aggregation.timeTo }}</td>
+            <td>{{ aggregation.name }}</td>
+            <td>{{ aggregation.log_count }}</td>
+          </tr>
+          <tr>
+            <td>{{ result.aggregation[0].timeFrom }}</td>
+            <td>
+              {{ result.aggregation[result.aggregation.length - 1].timeTo }}
+            </td>
+            <td>合計</td>
+            <td>{{ result.aggregationSum }}</td>
+          </tr>
+        </table>
+      </section>
+      <section>
+        <h4>データ整形前分析結果</h4>
+      </section>
+
+      <section>
+        <h4>分析結果グラフ</h4>
+        <BarChart :chartdata="chartData" :options="chartOptions" />
+      </section>
     </section>
-    {{ result }}
   </section>
 </template>
 
 <script>
+import BarChart from '~/components/BarChart.vue'
+
 export default {
+  components: {
+    BarChart
+  },
   data() {
     return {}
+  },
+  computed: {
+    chartData() {
+      return {
+        labels: this.result.aggregation.map(
+          (aggregation) =>
+            `${aggregation.name}(${aggregation.timeFrom} - ${aggregation.timeTo})`
+        ),
+        datasets: [
+          {
+            label: this.result.name,
+            backgroundColor: '#2196F3',
+            data: this.result.aggregation.map(
+              (aggregation) => aggregation.log_count
+            )
+          }
+        ]
+      }
+    },
+    chartOptions() {
+      return {
+        maintainAspectRatio: false
+      }
+    }
   },
   async asyncData({ params, error, $axios }) {
     const resultId = params.result
