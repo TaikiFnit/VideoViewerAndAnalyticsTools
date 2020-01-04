@@ -98,25 +98,39 @@ export default {
   },
   computed: {
     chartData() {
+      const labels = this.result.aggregation.map(
+        (aggregation) =>
+          `${aggregation.name}(${aggregation.timeFrom} - ${aggregation.timeTo})`
+      )
+      const data = this.result.aggregation.map(
+        (aggregation) => aggregation.log_count
+      )
       return {
-        labels: this.result.aggregation.map(
-          (aggregation) =>
-            `${aggregation.name}(${aggregation.timeFrom} - ${aggregation.timeTo})`
-        ),
+        labels,
         datasets: [
           {
             label: this.result.name,
             backgroundColor: '#2196F3',
-            data: this.result.aggregation.map(
-              (aggregation) => aggregation.log_count
-            )
+            data
           }
         ]
       }
     },
     chartOptions() {
       return {
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        scales: {
+          // 軸の設定
+          yAxes: [
+            {
+              // Y軸の設定
+              ticks: {
+                // 目盛りの設定
+                beginAtZero: true // 開始値を0
+              }
+            }
+          ]
+        }
       }
     }
   },
