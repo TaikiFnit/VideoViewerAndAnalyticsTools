@@ -284,8 +284,7 @@ export default {
     async onClickVisualTransitionSectionRegistrationCompleted() {},
     // 再生スタートした際に発火
     async playing() {
-      const time = await this.player.getCurrentTime()
-      console.log(time)
+      // const time = await this.player.getCurrentTime()
     },
     // 一時停止した際に発火
     async paused() {
@@ -296,8 +295,7 @@ export default {
     },
     // 再生終了した際に発火
     async ended() {
-      const time = await this.player.getCurrentTime()
-      console.log(time)
+      // const time = await this.player.getCurrentTime()
     }
   }
 }

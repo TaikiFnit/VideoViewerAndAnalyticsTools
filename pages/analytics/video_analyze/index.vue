@@ -252,8 +252,6 @@ export default {
       }
 
       const result = await this.$axios.$post('/api/analytics/start', data)
-      console.log('finnnnnnaly we got result id')
-      console.log(result)
       this.resultId = result.resultId
     }
   }

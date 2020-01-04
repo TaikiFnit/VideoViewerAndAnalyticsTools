@@ -137,7 +137,6 @@ export default {
   async asyncData({ params, error, $axios }) {
     const resultId = params.result
     const result = await $axios.$get(`/api/analytics/results/${resultId}`)
-    console.log(result)
     return { result }
   },
   methods: {
