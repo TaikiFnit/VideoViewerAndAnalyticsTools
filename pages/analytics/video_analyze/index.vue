@@ -6,9 +6,9 @@
       <nuxt-link to="/analytics">
         分析ツール TOP
       </nuxt-link>
-      &gt; 動画視聴ログ分析
+      &gt; 動画視聴ログ分析機能
     </p>
-    <h2>2. 動画視聴ログ分析</h2>
+    <h2>2. 動画視聴ログ分析機能</h2>
     <fieldset>
       <legend>2.1 分析に利用したい動画を選択してください</legend>
       <p>

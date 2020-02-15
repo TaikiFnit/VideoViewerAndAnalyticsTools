@@ -6,9 +6,10 @@
       <nuxt-link to="/analytics">
         分析ツール TOP
       </nuxt-link>
-      &gt; 分析結果一覧
+      &gt; 分析結果閲覧機能
     </p>
-    <h2>分析結果一覧ページ</h2>
+    <h2>分析結果閲覧機能</h2>
+    <h3>分析結果一覧</h3>
     <ul>
       <li v-for="(result, index) in results" :key="index">
         <section>

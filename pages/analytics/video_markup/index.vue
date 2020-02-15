@@ -6,10 +6,10 @@
       <nuxt-link to="/analytics">
         分析ツール TOP
       </nuxt-link>
-      &gt; 動画のセクショニング
+      &gt; 動画構成入力機能
     </p>
 
-    <h2>1. 動画のセクショニング</h2>
+    <h2>1. 動画構成入力機能</h2>
     <fieldset>
       <legend>1.1 分析に利用したい動画を選択してください</legend>
       <select v-model="videoIndex">
