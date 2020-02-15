@@ -31,7 +31,7 @@
       </section>
     </fieldset>
     <fieldset v-if="videoIndex != null">
-      <legend>1.2 動画のセクショニング</legend>
+      <legend>1.2 動画構成の入力</legend>
 
       <youtube
         id="player"
@@ -45,7 +45,7 @@
 
       <p>現在の再生時間: {{ currentTime }}</p>
       <section>
-        <h3>1.2.1 動画の内容ごとの分割</h3>
+        <h3>1.2.1 動画の解説内容・作業工程に基づくセクションの定義</h3>
         <table>
           <tr>
             <th>開始時間</th>
@@ -116,7 +116,7 @@
       </section>
 
       <section>
-        <h3>1.2.2 画面遷移ごとの分割</h3>
+        <h3>1.2.2 画面遷移発生時点の入力</h3>
         <table>
           <tr>
             <th>開始時間</th>
